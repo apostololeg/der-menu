@@ -1,10 +1,5 @@
 $(function() {
 
-    var __ = {
-        active: 'board__item_active',
-        pressed: 'board__item_pressed'
-    };
-
     /**
      * @contrustor
      *
@@ -17,8 +12,8 @@ $(function() {
 
         this.container = domElem.find('.board__wrap');
         this.inner = domElem.find('.board__inner');
-        this.active = $('.' + __.active);
-        this.controller = new tabController(this.active);
+        this.active = $('.control_active');
+        this.controller = new keyController(this.active);
 
         this.size = { x:x, y:y };
         this.tileSize = {
@@ -26,11 +21,11 @@ $(function() {
             y: 100 / y
         };
 
+        this.container.on('webkitTransitionEnd', this._onSwitched.bind(this));
         this.controller.domElem.on({
             move: this._onMove.bind(this),
             enter: this._onEnter.bind(this)
         });
-        this.container.on('webkitTransitionEnd', this._onSwitched.bind(this));
 
         this.move(0, 0);
     };
@@ -92,11 +87,6 @@ $(function() {
         _onSwitched: function() {
             console.log('[_onSwitched]');
             this.active.addClass(__.active);
-        },
-
-        _onEnter: function(e, data) {
-            console.log('[board] _onEnter', data);
-            data.elem.addClass(__.pressed);
         }
 
     });
